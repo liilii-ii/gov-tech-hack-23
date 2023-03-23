@@ -56,12 +56,15 @@ export class MissionComponent implements OnInit {
     );
   }
 
+  /**
+   * Öffnet den Status Dialog und gibt die Datenänderung über afterClosed() zurück
+   */
   openDialog(): void {
     const dialogRef = this.dialog.open(StateDialogComponent, {
       data: { state: this.state },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: StatesModel) => {
       console.log('The dialog was closed');
       this.state = result;
     });
