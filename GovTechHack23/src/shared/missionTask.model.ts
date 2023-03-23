@@ -6,6 +6,7 @@ export interface MissionTask {
     Description: string,
     Mission: string,
     Status: string,
+    Id: number,
     Helper: Helper,
     MissionManager: MissionManager 
   }

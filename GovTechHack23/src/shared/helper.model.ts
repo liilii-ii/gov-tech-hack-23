@@ -3,5 +3,5 @@ export interface Helper {
   Phone: string,
   RadioFrequence: number,
   Skills: string,
-
+  TaskId: number
 }
