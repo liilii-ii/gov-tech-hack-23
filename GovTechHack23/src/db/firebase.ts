@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+//import { initializeApp } from "firebase/app";
+//import { getDatabase } from "firebase/database";
 
 
 const firebaseConfig = {
@@ -14,6 +14,6 @@ const firebaseConfig = {
   };
 
   // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+//const app = initializeApp(firebaseConfig);
 
-const database = getDatabase(app);
+//const database = getDatabase(app);
