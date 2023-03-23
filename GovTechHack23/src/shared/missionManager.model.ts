@@ -1,5 +1,6 @@
 export interface MissionManager {
-  Name: string;
-  Phone: string,
-  RadioFrequence: number,
+  name: string;
+  phone: string,
+  radioFrequence: string,
+  missionId: number
 }

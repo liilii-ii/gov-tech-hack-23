@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList} from '@angular/fire/compat/database';
+import {
+  AngularFirestoreCollection,
+  AngularFirestore,
+} from '@angular/fire/compat/firestore';
+
 import { MissionTask } from 'src/shared/missionTask.model';
+import { Helper } from 'src/shared/helper.model';
+import { Mission } from 'src/shared/mission.model';
+import { MissionManager } from 'src/shared/missionManager.model';
 import { map, Observable } from 'rxjs';
 
 
@@ -9,21 +16,62 @@ import { map, Observable } from 'rxjs';
 })
 export class FirebaseDbService {
 
-  private ref: any
+  private tasks: AngularFirestoreCollection<MissionTask>;
+  private helper: AngularFirestoreCollection<Helper>;
+  private missions: AngularFirestoreCollection<Mission>;
+  private missionManager: AngularFirestoreCollection<MissionManager>;
 
-  constructor(private db: AngularFireDatabase) {
-    this.ref = db.list('Tasks');
+  constructor(private afs: AngularFirestore) {
+    this.tasks = afs.collection('Tasks');
+    this.helper = afs.collection('Helper');
+    this.missions = afs.collection('Missions');
+    this.missionManager = afs.collection('MissionManager');
    }
 
-  getAll(): Observable<any> {
+  getAllTasks(): Observable<MissionTask[]> {
 
-    return this.ref.snapshotChanges().pipe(
-      map((changes:any) => {
-        console.log(changes)
-        return changes.map((change:any) => ({
+    return this.tasks.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((change) => ({
           ...change.payload.doc.data(),
           id: change.payload.doc.id,
-        }))}
+        }))
+      )
+    );
+  }
+
+  getAllHelper(): Observable<Helper[]> {
+
+    return this.helper.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((change) => ({
+          ...change.payload.doc.data(),
+          id: change.payload.doc.id,
+        }))
+      )
+    );
+  }
+
+  getAllMissions(): Observable<Mission[]> {
+
+    return this.missions.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((change) => ({
+          ...change.payload.doc.data(),
+          id: change.payload.doc.id,
+        }))
+      )
+    );
+  }
+
+  getAllMissionManager(): Observable<MissionManager[]> {
+
+    return this.missionManager.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((change) => ({
+          ...change.payload.doc.data(),
+          id: change.payload.doc.id,
+        }))
       )
     );
   }

@@ -50,7 +50,14 @@ export class MissionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.firebaseDbService.getAll().subscribe((l) => console.log(l));
+    this.firebaseDbService.getAllMissionManager().subscribe(l => console.log(l))
+
+    this.firebaseDbService.getAllMissions().subscribe(l => console.log(l))
+
+    this.firebaseDbService.getAllHelper().subscribe(l => console.log(l))
+
+    this.firebaseDbService.getAllTasks().subscribe((l) => console.log(l))
+
     this.activeMissionId$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id')))
     );

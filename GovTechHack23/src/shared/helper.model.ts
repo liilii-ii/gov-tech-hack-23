@@ -1,7 +1,7 @@
 export interface Helper {
-  Name: string;
-  Phone: string,
-  RadioFrequence: number,
-  Skills: string,
-
+  name: string;
+  phone: string,
+  radioFrequence: number,
+  skills: string,
+  taskId: number
 }
