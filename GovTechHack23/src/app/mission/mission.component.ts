@@ -1,3 +1,4 @@
+import { FirebaseDbService } from 'src/db/firebase-db.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,9 +10,10 @@ export class MissionComponent implements OnInit {
 
   public subMissions: { tab: string }[] = [{tab: "Zone A"}, {tab: "Zone B"}, {tab: "Zone C"}, {tab: "Zone D"}];
 
-  constructor() { }
+  constructor(private firebaseDbService: FirebaseDbService) { }
 
   ngOnInit(): void {
+    this.firebaseDbService.getAll().subscribe(l => console.log(l))
   }
 
 }
