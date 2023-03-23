@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import {Map} from 'maplibre-gl';
 
@@ -8,7 +9,7 @@ import {Map} from 'maplibre-gl';
 })
 export class MapViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     const map = new Map({
@@ -216,7 +217,21 @@ export class MapViewComponent implements OnInit {
                 'fill-opacity': 0.4
             }
         });
+
+        
     });
+    map.on('click', 'area_Aa', () => {
+        this.router.navigate(['mission',  {id: 1}])
+    })
+    map.on('click', 'area_Bb', () => {
+        this.router.navigate(['mission',  {id: 2}])
+    })
+    map.on('click', 'area_Cc', () => {
+        this.router.navigate(['mission',  {id: 3}])
+    })
+    map.on('click', 'area_Dd', () => {
+        this.router.navigate(['mission',  {id: 4}])
+    })
   }
 
 }
