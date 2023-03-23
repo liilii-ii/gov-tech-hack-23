@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Status melden</h1>
 <div mat-dialog-content>
   <p>Wie ist deine aktuelle Einsatzsituation?</p>
-  <select matNativeControl cdkFocusInitial [(ngModel)]="data" name="car">
+  <select cdkFocusInitial [(ngModel)]="data" name="car">
     <option value="" selected></option>
     <option *ngFor="let state of states" [value]="state.id">
       {{state.text}}
