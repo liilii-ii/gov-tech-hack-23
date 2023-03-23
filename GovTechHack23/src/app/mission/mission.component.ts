@@ -12,6 +12,8 @@ import { States, StatesModel } from '../state-dialog/state-dialog.models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, of, combineLatest, EMPTY } from 'rxjs';
 import { MissionTask } from 'src/shared/missionTask.model';
+import { Status } from 'src/shared/status.model';
+import { identifierName } from '@angular/compiler';
 
 @Component({
   selector: 'app-mission',
@@ -26,7 +28,10 @@ export class MissionComponent implements OnInit {
     { tab: 'Zone D', id: 4 },
   ];
 
-  state: StatesModel = { id: States.Started, text: 'Suche gestartet' };
+  /**
+   * Status
+   */
+  public state: Status | undefined;
 
   /**
    * Aktives Missions Tab
@@ -49,6 +54,16 @@ export class MissionComponent implements OnInit {
   public activeMission: Mission | undefined;
 
   /**
+   * States
+   */
+  public states: Status[] | undefined;
+
+
+  public getActiveState(id: number | undefined): string | undefined {
+    return this.states?.find(s => s.StatusId === id)?.Name
+  }
+
+  /**
    * Returns active tab index
    */
   public get getIndexOfActiveTab$(): Observable<number> {
@@ -69,11 +84,11 @@ export class MissionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.firebaseDbService.getAllMissionManager().subscribe(l => console.log(l))
-
        this.activeTaskId$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id')))
     );
+
+    this.firebaseDbService.getAllStatus().subscribe(s => this.states = s);
 
     combineLatest([
       this.firebaseDbService.getAllMissions(), 
@@ -82,12 +97,14 @@ export class MissionComponent implements OnInit {
       this.firebaseDbService.getAllTasks(),
       this.activeTaskId$,
     ]
-      ).subscribe(([missions, managers, helpers, tasks, activeId]) => {
-        console.log(activeId)
+      ).subscribe(([missions, managers, helpers, tasks,  activeId]) => {
         this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)}));
         this.activeTask = this.missionTasks.find(t => t.TaskId === activeId);
         this.activeMission = {...missions[0], MissionManager: managers.find(m => m.MissionId === missions[0].MissionId)};
+        
       })
+
+    
 
  
   }
@@ -97,12 +114,15 @@ export class MissionComponent implements OnInit {
    */
   openDialog(): void {
     const dialogRef = this.dialog.open(StateDialogComponent, {
-      data: { state: this.state },
+      data: { state: this.activeTask?.StatusId },
     });
 
-    dialogRef.afterClosed().subscribe((result: StatesModel) => {
-      console.log('The dialog was closed');
-      this.state = result;
+    dialogRef.afterClosed().subscribe((result: number) => {
+      if(this.activeTask?.id) {
+        const task = this.activeTask;
+        delete task.Helper;
+        this.firebaseDbService.updateTask(this.activeTask?.id, {...this.activeTask, StatusId: Number(result)})
+      }
     });
   }
 

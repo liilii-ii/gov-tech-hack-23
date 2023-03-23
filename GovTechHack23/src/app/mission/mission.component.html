@@ -29,7 +29,7 @@
   <div class="state">
     <h2>Einsatz Status</h2>
     <span class="stateUpdate">
-      <span>Suche ausstehend</span>
+      <span>{{getActiveState(activeTask?.StatusId)}}</span>
       <button mat-raised-button (click)="openDialog()"><mat-icon>info</mat-icon>Status update</button>
     </span>
   </div>
