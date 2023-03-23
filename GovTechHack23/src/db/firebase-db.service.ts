@@ -92,10 +92,17 @@ export class FirebaseDbService {
     );
   }
 
-  updateMissionStatus(
+  updateMission(
     id: string,
-    payload: Partial<Mission>
+    payload: Mission
   ) {
     return this.missions.doc(id).update(payload);
+  }
+
+  updateTask(
+    id: string,
+    payload: Task
+  ) {
+    return this.tasks.doc(id).update(payload);
   }
 }
