@@ -3,13 +3,10 @@
     <h1>{{activeMission?.Name}}</h1>
   </div>
   <div class="subMissions">
-    <mat-tab-group [selectedIndex]="getIndexOfActiveTab$ | async" (selectedTabChange)="changeParam($event)" [contentTabIndex]="activeTask && activeTask.TaskId ? activeTask.TaskId - 1 : undefined">
+    <mat-tab-group [selectedIndex]="activeTask && activeTask.TaskId ? activeTask.TaskId - 1 : undefined" (selectedTabChange)="changeParam($event)" >
       <mat-tab [label]="missionTask.Name" *ngFor="let missionTask of missionTasks"></mat-tab>
     </mat-tab-group>
   </div>
-  <ng-container>
-    
-  </ng-container>
   <div class="helper">
     <h2>Helfende</h2>
     <span class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
@@ -30,7 +27,7 @@
     <h2>Einsatz Status</h2>
     <span class="stateUpdate">
       <span>Suche ausstehend</span>
-      <button mat-raised-button (click)="openDialog()"><mat-icon>info</mat-icon>Status update</button>
+      <button mat-flat-button color="accent" (click)="openDialog()">Status update</button>
     </span>
   </div>
   <div class="missionManager">

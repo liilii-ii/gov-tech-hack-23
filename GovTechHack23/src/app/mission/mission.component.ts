@@ -12,6 +12,7 @@ import { States, StatesModel } from '../state-dialog/state-dialog.models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, of, combineLatest, EMPTY } from 'rxjs';
 import { MissionTask } from 'src/shared/missionTask.model';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-mission',
@@ -48,19 +49,6 @@ export class MissionComponent implements OnInit {
    */
   public activeMission: Mission | undefined;
 
-  /**
-   * Returns active tab index
-   */
-  public get getIndexOfActiveTab$(): Observable<number> {
-    if (!this.activeTaskId$) return of(0);
-    return this.activeTaskId$.pipe(
-      map((id) => {
-        const tab = this.subMissions.find((t) => t.id === id);
-        return tab ? this.subMissions.indexOf(tab) : 0;
-      })
-    );
-  }
-
   constructor(
     private firebaseDbService: FirebaseDbService,
     private route: ActivatedRoute,
@@ -69,27 +57,37 @@ export class MissionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.firebaseDbService.getAllMissionManager().subscribe(l => console.log(l))
+    this.firebaseDbService
+      .getAllMissionManager()
+      .subscribe((l) => console.log(l));
 
-       this.activeTaskId$ = this.route.paramMap.pipe(
+    this.activeTaskId$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id')))
     );
 
     combineLatest([
-      this.firebaseDbService.getAllMissions(), 
-      this.firebaseDbService.getAllMissionManager(), 
-      this.firebaseDbService.getAllHelper(), 
+      this.firebaseDbService.getAllMissions(),
+      this.firebaseDbService.getAllMissionManager(),
+      this.firebaseDbService.getAllHelper(),
       this.firebaseDbService.getAllTasks(),
       this.activeTaskId$,
-    ]
-      ).subscribe(([missions, managers, helpers, tasks, activeId]) => {
-        console.log(activeId)
-        this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)}));
-        this.activeTask = this.missionTasks.find(t => t.TaskId === activeId);
-        this.activeMission = {...missions[0], MissionManager: managers.find(m => m.MissionId === missions[0].MissionId)};
-      })
+    ]).subscribe(([missions, managers, helpers, tasks, activeId]) => {
+      console.log(activeId);
+      this.missionTasks = tasks.map((t) => ({
+        ...t,
+        Helper: helpers.find((i) => i.TaskId === t.TaskId),
+      }));
+      //missionTasks aufsteigend sortieren
+      this.missionTasks.sort((a, b) => a.TaskId - b.TaskId);
 
- 
+      this.activeTask = this.missionTasks.find((t) => t.TaskId === activeId);
+      this.activeMission = {
+        ...missions[0],
+        MissionManager: managers.find(
+          (m) => m.MissionId === missions[0].MissionId
+        ),
+      };
+    });
   }
 
   /**
@@ -106,7 +104,7 @@ export class MissionComponent implements OnInit {
     });
   }
 
-  changeParam(taskId: any): void {
-    this.router.navigate(['mission',  {id: taskId.index+1}])
+  changeParam(event: MatTabChangeEvent): void {
+    this.router.navigate(['/mission', { id: event.index + 1 }]);
   }
 }
