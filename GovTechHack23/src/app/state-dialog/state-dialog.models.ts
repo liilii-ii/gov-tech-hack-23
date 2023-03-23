@@ -1,6 +1,6 @@
 export enum States {
   Assigned,
-  Accepted,
+  Pending,
   Started,
   Aborted,
   Finished,

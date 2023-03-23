@@ -17,6 +17,8 @@ import { StateDialogComponent } from './state-dialog/state-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { StateSnackBarComponent } from './state-snack-bar/state-snack-bar.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MapComponent,
     MapViewComponent,
     StateDialogComponent,
+    StateSnackBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     FormsModule,
     MatSelectModule,
     MatButtonToggleModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
