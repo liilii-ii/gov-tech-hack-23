@@ -101,7 +101,7 @@ export class FirebaseDbService {
 
   updateTask(
     id: string,
-    payload: Task
+    payload: MissionTask
   ) {
     return this.tasks.doc(id).update(payload);
   }

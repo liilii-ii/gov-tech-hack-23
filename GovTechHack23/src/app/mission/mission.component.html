@@ -4,22 +4,23 @@
   </div>
   <div class="subMissions">
     <mat-tab-group [selectedIndex]="getIndexOfActiveTab$ | async">
-      <mat-tab [label]="subMission.tab" *ngFor="let subMission of subMissions">{{ subMission.tab }}</mat-tab>
+      <mat-tab [label]="missionTask.Name" *ngFor="let missionTask of missionTasks"></mat-tab>
     </mat-tab-group>
   </div>
+  <ng-container>
+    
+  </ng-container>
   <div class="helper">
     <h2>Helfende</h2>
-    <span class="iconText"> <mat-icon>assignment_ind</mat-icon>Marielle C.</span>
+    <span class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
   </div>
   <div class="frequency">
     <h2>Kommunikation</h2>
-    <span>45.5 (Frequenz)</span>
+    <span>{{activeTask?.Helper?.RadioFrequence}} (Frequenz)</span>
   </div>
   <div class="description">
     <h2>Info</h2>
-    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-      kasd gubergren, no sea takimata sanctus est Lorem ipsum d</p>
+    <p>{{activeTask?.Description}}</p>
   </div>
   <div class="specialFeatures">
     <h2>Besonderheiten</h2>
@@ -34,7 +35,7 @@
   </div>
   <div class="missionManager">
     <h2>Einsatzleiter</h2>
-    <span class="iconText"> <mat-icon>person</mat-icon>Laura K.</span>
+    <span class="iconText"> <mat-icon>person</mat-icon>{{activeMission?.MissionManager?.Name}}</span>
   </div>
 
   <button id="mapSwitch" mat-fab extended [routerLink]="'/map'">

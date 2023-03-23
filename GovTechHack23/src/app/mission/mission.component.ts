@@ -1,3 +1,5 @@
+import { MissionManager } from 'src/shared/missionManager.model';
+import { Mission } from 'src/shared/mission.model';
 import { FirebaseDbService } from 'src/db/firebase-db.service';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -8,7 +10,8 @@ import {
 import { StateDialogComponent } from '../state-dialog/state-dialog.component';
 import { States, StatesModel } from '../state-dialog/state-dialog.models';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, combineLatest, EMPTY } from 'rxjs';
+import { MissionTask } from 'src/shared/missionTask.model';
 
 @Component({
   selector: 'app-mission',
@@ -28,14 +31,29 @@ export class MissionComponent implements OnInit {
   /**
    * Aktives Missions Tab
    */
-  public activeMissionId$: Observable<number> | undefined;
+  public activeTaskId$: Observable<number> = of(1);
+
+  /**
+   * Missionen
+   */
+  public missionTasks: MissionTask[] | undefined;
+
+  /**
+   * Aktive Mission
+   */
+  public activeTask: MissionTask | undefined;
+
+  /**
+   * Aktive Mission
+   */
+  public activeMission: Mission | undefined;
 
   /**
    * Returns active tab index
    */
   public get getIndexOfActiveTab$(): Observable<number> {
-    if (!this.activeMissionId$) return of(0);
-    return this.activeMissionId$.pipe(
+    if (!this.activeTaskId$) return of(0);
+    return this.activeTaskId$.pipe(
       map((id) => {
         const tab = this.subMissions.find((t) => t.id === id);
         return tab ? this.subMissions.indexOf(tab) : 0;
@@ -52,15 +70,24 @@ export class MissionComponent implements OnInit {
   ngOnInit(): void {
     this.firebaseDbService.getAllMissionManager().subscribe(l => console.log(l))
 
-    this.firebaseDbService.getAllMissions().subscribe(l => console.log(l))
-
-    this.firebaseDbService.getAllHelper().subscribe(l => console.log(l))
-
-    this.firebaseDbService.getAllTasks().subscribe((l) => console.log(l))
-
-    this.activeMissionId$ = this.route.paramMap.pipe(
+       this.activeTaskId$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id')))
     );
+
+    combineLatest([
+      this.firebaseDbService.getAllMissions(), 
+      this.firebaseDbService.getAllMissionManager(), 
+      this.firebaseDbService.getAllHelper(), 
+      this.firebaseDbService.getAllTasks(),
+      this.activeTaskId$,
+    ]
+      ).subscribe(([missions, managers, helpers, tasks, activeId]) => {
+        this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)}));
+        this.activeTask = this.missionTasks.find(t => t.TaskId === activeId);
+        this.activeMission = {...missions[0], MissionManager: managers.find(m => m.MissionId === missions[0].MissionId)};
+      })
+
+ 
   }
 
   /**
