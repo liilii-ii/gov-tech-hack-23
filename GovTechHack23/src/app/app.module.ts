@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MissionComponent } from './mission/mission.component';
 import { MapComponent } from './map/map.component';
 import {MatIconModule} from '@angular/material/icon';
+import {MatTabsModule} from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MapViewComponent } from './map-view/map-view.component';
 
@@ -25,8 +26,9 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     NoopAnimationsModule,
-MatButtonModule,
-MatIconModule
+    MatButtonModule,
+    MatIconModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

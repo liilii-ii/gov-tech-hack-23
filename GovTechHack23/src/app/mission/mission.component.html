@@ -1,1 +1,41 @@
-<p>mission works!</p>
+<div class="container">
+  <div class="title">
+    <h1>Vermisstes Kind</h1>
+  </div>
+  <div class="subMissions">
+    <mat-tab-group>
+      <mat-tab [label]="subMission.tab" *ngFor="let subMission of subMissions">{{ subMission.tab }}</mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="helper">
+    <h2>Helfende</h2>
+    <span>Marielle C.</span>
+  </div>
+  <div class="frequency">
+    <h2>Frequenz</h2>
+    <span>45.5</span>
+  </div>
+  <div class="description">
+    <h2>Info</h2>
+    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+      kasd gubergren, no sea takimata sanctus est Lorem ipsum d</p>
+  </div>
+  <div class="specialFeatures">
+    <h2>Besonderheiten</h2>
+    <span>Gefahr 1</span>
+  </div>
+  <div class="state">
+    <h2>Status</h2>
+    <span>Suche gestartet</span>
+  </div>
+  <div class="missionManager">
+    <h2>Einsatzleiter</h2>
+    <span>Laura K.</span>
+  </div>
+
+  <button id="mapSwitch" mat-fab extended [routerLink]="'/map'">
+    <mat-icon>map</mat-icon>
+  </button>
+
+</div>
