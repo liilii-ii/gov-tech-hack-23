@@ -12,6 +12,7 @@ import { MapViewComponent } from './map-view/map-view.component';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { environment } from 'src/environments/environment';
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,1 +1,5 @@
 <div id="map"></div>
+<mat-button-toggle-group name="mapStyle" value="basemap">
+    <mat-button-toggle value="basemap" (click)="changeMapStyle('basemap')">Basemap</mat-button-toggle>
+    <mat-button-toggle value="satellite" (click)="changeMapStyle('satellite')">Satellite</mat-button-toggle>
+</mat-button-toggle-group>
