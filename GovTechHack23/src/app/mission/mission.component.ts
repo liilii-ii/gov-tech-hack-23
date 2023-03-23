@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MissionComponent implements OnInit {
 
+  public subMissions: { tab: string }[] = [{tab: "Zone A"}, {tab: "Zone B"}, {tab: "Zone C"}, {tab: "Zone D"}];
+
   constructor() { }
 
   ngOnInit(): void {

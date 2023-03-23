@@ -1,0 +1,58 @@
+h2 {
+  margin: 0;
+}
+
+.container {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  // grid-template-rows: auto auto auto 1fr 1fr 1fr 1fr;
+  gap: 8px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "title title"
+    "subMissions subMissions"
+    "helper frequency"
+    "description description"
+    "specialFeatures specialFeatures"
+    "state state"
+    "missionManager missionManager";
+}
+
+.title {
+  grid-area: title;
+}
+
+.subMissions {
+  grid-area: subMissions;
+}
+
+.helper {
+  grid-area: helper;
+}
+
+.frequency {
+  grid-area: frequency;
+}
+
+.description {
+  grid-area: description;
+}
+
+.state {
+  grid-area: state;
+}
+
+.missionManager {
+  grid-area: missionManager;
+}
+
+#mapSwitch {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.specialFeatures {
+  grid-area: specialFeatures;
+}
