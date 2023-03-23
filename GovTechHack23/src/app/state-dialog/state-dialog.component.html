@@ -3,8 +3,8 @@
   <p>Wie ist deine aktuelle Einsatzsituation?</p>
   <select cdkFocusInitial [(ngModel)]="data" name="car">
     <option value="" selected></option>
-    <option *ngFor="let state of states" [value]="state.id">
-      {{state.text}}
+    <option *ngFor="let state of states" [value]="state.StatusId">
+      {{state.Name}}
     </option>
   </select>
 </div>

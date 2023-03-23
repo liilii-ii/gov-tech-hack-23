@@ -13,6 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, of, combineLatest, EMPTY } from 'rxjs';
 import { MissionTask } from 'src/shared/missionTask.model';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Status } from 'src/shared/status.model';
+import { identifierName } from '@angular/compiler';
 
 @Component({
   selector: 'app-mission',
@@ -27,7 +29,10 @@ export class MissionComponent implements OnInit {
     { tab: 'Zone D', id: 4 },
   ];
 
-  state: StatesModel = { id: States.Started, text: 'Suche gestartet' };
+  /**
+   * Status
+   */
+  public state: Status | undefined;
 
   /**
    * Aktives Missions Tab
@@ -49,6 +54,28 @@ export class MissionComponent implements OnInit {
    */
   public activeMission: Mission | undefined;
 
+  /**
+   * States
+   */
+  public states: Status[] | undefined;
+
+  public getActiveState(id: number | undefined): string | undefined {
+    return this.states?.find((s) => s.StatusId === id)?.Name;
+  }
+
+  /**
+   * Returns active tab index
+   */
+  public get getIndexOfActiveTab$(): Observable<number> {
+    if (!this.activeTaskId$) return of(0);
+    return this.activeTaskId$.pipe(
+      map((id) => {
+        const tab = this.subMissions.find((t) => t.id === id);
+        return tab ? this.subMissions.indexOf(tab) : 0;
+      })
+    );
+  }
+
   constructor(
     private firebaseDbService: FirebaseDbService,
     private route: ActivatedRoute,
@@ -64,6 +91,8 @@ export class MissionComponent implements OnInit {
     this.activeTaskId$ = this.route.paramMap.pipe(
       map((params) => Number(params.get('id')))
     );
+
+    this.firebaseDbService.getAllStatus().subscribe((s) => (this.states = s));
 
     combineLatest([
       this.firebaseDbService.getAllMissions(),
@@ -95,12 +124,18 @@ export class MissionComponent implements OnInit {
    */
   openDialog(): void {
     const dialogRef = this.dialog.open(StateDialogComponent, {
-      data: { state: this.state },
+      data: { state: this.activeTask?.StatusId },
     });
 
-    dialogRef.afterClosed().subscribe((result: StatesModel) => {
-      console.log('The dialog was closed');
-      this.state = result;
+    dialogRef.afterClosed().subscribe((result: number) => {
+      if (this.activeTask?.id) {
+        const task = this.activeTask;
+        delete task.Helper;
+        this.firebaseDbService.updateTask(this.activeTask?.id, {
+          ...this.activeTask,
+          StatusId: Number(result),
+        });
+      }
     });
   }
 
