@@ -1,5 +1,5 @@
 export interface Mission {
-  Name: string;
-  Status: string,
-  Id: number
+  name: string;
+  status: string,
+  missionId: number
 }
