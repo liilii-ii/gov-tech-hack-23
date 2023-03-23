@@ -2,13 +2,14 @@ import { Helper } from "./helper.model";
 import { MissionManager } from "./missionManager.model";
 
 export interface MissionTask {
-    name: string;
-    description: string,
-    mission: string,
-    status: string,
-    taskId: number,
-    helper: Helper,
-    missionManager: MissionManager 
+    Name: string,
+    Description: string,
+    Mission: string,
+    Status: number,
+    TaskId: number,
+    Helper: Helper,
+    MissionManager: MissionManager,
+    id: string
   }
 
   

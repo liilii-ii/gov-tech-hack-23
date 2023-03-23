@@ -8,6 +8,7 @@ import { MissionTask } from 'src/shared/missionTask.model';
 import { Helper } from 'src/shared/helper.model';
 import { Mission } from 'src/shared/mission.model';
 import { MissionManager } from 'src/shared/missionManager.model';
+import { Status } from 'src/shared/status.model';
 import { map, Observable } from 'rxjs';
 
 
@@ -20,13 +21,28 @@ export class FirebaseDbService {
   private helper: AngularFirestoreCollection<Helper>;
   private missions: AngularFirestoreCollection<Mission>;
   private missionManager: AngularFirestoreCollection<MissionManager>;
+  private status: AngularFirestoreCollection<Status>;
 
   constructor(private afs: AngularFirestore) {
     this.tasks = afs.collection('Tasks');
     this.helper = afs.collection('Helper');
     this.missions = afs.collection('Missions');
     this.missionManager = afs.collection('MissionManager');
+    this.status = afs.collection('Status');
    }
+
+   getAllStatus(): Observable<Status[]> {
+
+    return this.status.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((change) => ({
+          ...change.payload.doc.data(),
+          id: change.payload.doc.id,
+        }))
+      )
+    );
+  }
+
 
   getAllTasks(): Observable<MissionTask[]> {
 
@@ -74,5 +90,12 @@ export class FirebaseDbService {
         }))
       )
     );
+  }
+
+  updateMissionStatus(
+    id: string,
+    payload: Partial<Mission>
+  ) {
+    return this.missions.doc(id).update(payload);
   }
 }
