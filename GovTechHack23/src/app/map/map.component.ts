@@ -11,7 +11,7 @@ export class MapComponent implements OnInit {
   constructor(private router: Router, private notifier: StateNotifierService) {}
 
   ngOnInit(): void {
-    this.notifier.openSnackBar();
+    //this.notifier.openSnackBar();
   }
 
   public navigateToMissions(): void {

@@ -1,9 +1,9 @@
 <div class="container">
   <div class="title">
-    <h1>Vermisstes Kind</h1>
+    <h1>{{activeMission?.Name}}</h1>
   </div>
   <div class="subMissions">
-    <mat-tab-group [selectedIndex]="getIndexOfActiveTab$ | async">
+    <mat-tab-group [selectedIndex]="getIndexOfActiveTab$ | async" (selectedTabChange)="changeParam($event)" [contentTabIndex]="activeTask && activeTask.TaskId ? activeTask.TaskId - 1 : undefined">
       <mat-tab [label]="missionTask.Name" *ngFor="let missionTask of missionTasks"></mat-tab>
     </mat-tab-group>
   </div>

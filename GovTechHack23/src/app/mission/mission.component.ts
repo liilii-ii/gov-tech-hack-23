@@ -9,7 +9,7 @@ import {
 } from '@angular/material/dialog';
 import { StateDialogComponent } from '../state-dialog/state-dialog.component';
 import { States, StatesModel } from '../state-dialog/state-dialog.models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, of, combineLatest, EMPTY } from 'rxjs';
 import { MissionTask } from 'src/shared/missionTask.model';
 
@@ -31,7 +31,7 @@ export class MissionComponent implements OnInit {
   /**
    * Aktives Missions Tab
    */
-  public activeTaskId$: Observable<number> = of(1);
+  public activeTaskId$: Observable<number> | undefined;
 
   /**
    * Missionen
@@ -64,7 +64,8 @@ export class MissionComponent implements OnInit {
   constructor(
     private firebaseDbService: FirebaseDbService,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -82,6 +83,7 @@ export class MissionComponent implements OnInit {
       this.activeTaskId$,
     ]
       ).subscribe(([missions, managers, helpers, tasks, activeId]) => {
+        console.log(activeId)
         this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)}));
         this.activeTask = this.missionTasks.find(t => t.TaskId === activeId);
         this.activeMission = {...missions[0], MissionManager: managers.find(m => m.MissionId === missions[0].MissionId)};
@@ -102,5 +104,9 @@ export class MissionComponent implements OnInit {
       console.log('The dialog was closed');
       this.state = result;
     });
+  }
+
+  changeParam(taskId: any): void {
+    this.router.navigate(['mission',  {id: taskId.index+1}])
   }
 }
