@@ -3,7 +3,7 @@
     <h1>Vermisstes Kind</h1>
   </div>
   <div class="subMissions">
-    <mat-tab-group>
+    <mat-tab-group [selectedIndex]="getIndexOfActiveTab$ | async">
       <mat-tab [label]="subMission.tab" *ngFor="let subMission of subMissions">{{ subMission.tab }}</mat-tab>
     </mat-tab-group>
   </div>

@@ -1,3 +1,4 @@
+import { FirebaseDbService } from 'src/db/firebase-db.service';
 import { Component, OnInit } from '@angular/core';
 import {
   MatDialog,
@@ -6,6 +7,8 @@ import {
 } from '@angular/material/dialog';
 import { StateDialogComponent } from '../state-dialog/state-dialog.component';
 import { States, StatesModel } from '../state-dialog/state-dialog.models';
+import { ActivatedRoute } from '@angular/router';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-mission',
@@ -13,18 +16,45 @@ import { States, StatesModel } from '../state-dialog/state-dialog.models';
   styleUrls: ['./mission.component.scss'],
 })
 export class MissionComponent implements OnInit {
-  subMissions: { tab: string }[] = [
-    { tab: 'Zone A' },
-    { tab: 'Zone B' },
-    { tab: 'Zone C' },
-    { tab: 'Zone D' },
+  public subMissions: { tab: string; id: number }[] = [
+    { tab: 'Zone A', id: 1 },
+    { tab: 'Zone B', id: 2 },
+    { tab: 'Zone C', id: 3 },
+    { tab: 'Zone D', id: 4 },
   ];
 
   state: StatesModel = { id: States.Started, text: 'Suche gestartet' };
 
-  constructor(public dialog: MatDialog) {}
+  /**
+   * Aktives Missions Tab
+   */
+  public activeMissionId$: Observable<number> | undefined;
 
-  ngOnInit(): void {}
+  /**
+   * Returns active tab index
+   */
+  public get getIndexOfActiveTab$(): Observable<number> {
+    if (!this.activeMissionId$) return of(0);
+    return this.activeMissionId$.pipe(
+      map((id) => {
+        const tab = this.subMissions.find((t) => t.id === id);
+        return tab ? this.subMissions.indexOf(tab) : 0;
+      })
+    );
+  }
+
+  constructor(
+    private firebaseDbService: FirebaseDbService,
+    private route: ActivatedRoute,
+    public dialog: MatDialog
+  ) {}
+
+  ngOnInit(): void {
+    this.firebaseDbService.getAll().subscribe((l) => console.log(l));
+    this.activeMissionId$ = this.route.paramMap.pipe(
+      map((params) => Number(params.get('id')))
+    );
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(StateDialogComponent, {

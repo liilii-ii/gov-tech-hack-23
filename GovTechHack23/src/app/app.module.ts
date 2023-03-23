@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { StateDialogComponent } from './state-dialog/state-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatDialogModule,
     FormsModule,
     MatSelectModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
