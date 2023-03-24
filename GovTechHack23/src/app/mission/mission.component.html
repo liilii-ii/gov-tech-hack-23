@@ -21,7 +21,7 @@
       <h2>Helfende</h2>
       <div class="wrapper">
         <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
-        <span class="iconText"> <mat-icon>phone</mat-icon>{{activeTask?.Helper?.Phone}}</span>
+        <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>phone</mat-icon>{{activeTask?.Helper?.Phone}}</span>
       </div>
       <span> {{activeTask?.Helper?.Skills}}</span>
       <button *ngIf="!activeTask?.Helper" mat-flat-button color="accent" (click)="openAddHelperDialog()">Helfender Zuordnen</button>
