@@ -81,8 +81,6 @@ export class MissionComponent implements OnInit {
     return this.states?.find((s) => s.StatusId === id)?.Name;
   }
 
- 
-
   constructor(
     private firebaseDbService: FirebaseDbService,
     private route: ActivatedRoute,
@@ -91,9 +89,9 @@ export class MissionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-       this.activeTaskId$ = this.route.queryParams.pipe(
-        tap(params => this.activeHelperId === Number(params.helper)),
-        map((params) => Number((params as any).taskId))
+    this.activeTaskId$ = this.route.queryParams.pipe(
+      tap((params) => this.activeHelperId === Number(params.helper)),
+      map((params) => Number((params as any).taskId))
     );
 
     this.firebaseDbService.getAllStatus().subscribe((s) => (this.states = s));
@@ -122,18 +120,10 @@ export class MissionComponent implements OnInit {
    */
   openStateDialog(): void {
     const dialogRef = this.dialog.open(StateDialogComponent, {
-      data: { state: this.activeTask?.StatusId },
-    });
-
-    dialogRef.afterClosed().subscribe((result: number) => {
-      if (this.activeTask?.id) {
-        const task = this.activeTask;
-        delete task.Helper;
-        this.firebaseDbService.updateTask(this.activeTask?.id, {
-          ...this.activeTask,
-          StatusId: Number(result),
-        });
-      }
+      data: {
+        state: this.activeTask?.StatusId,
+        activeTask: this.activeTask?.TaskId,
+      },
     });
   }
 
@@ -152,6 +142,9 @@ export class MissionComponent implements OnInit {
   }
 
   changeParam(taskId: any): void {
-    this.router.navigate(['/mission'], { queryParams: { taskId: taskId.index+1 }, queryParamsHandling: 'merge' });
+    this.router.navigate(['/mission'], {
+      queryParams: { taskId: taskId.index + 1 },
+      queryParamsHandling: 'merge',
+    });
   }
 }

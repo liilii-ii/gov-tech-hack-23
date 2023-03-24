@@ -10,11 +10,15 @@
   <div class="helper">
     <h2>Helfende</h2>
     <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
+    <span> {{activeTask?.Helper?.Skills}}</span>
     <button *ngIf="!activeTask?.Helper" mat-flat-button color="accent" (click)="openAddHelperDialog()">Helfender Zuordnen</button>
   </div>
   <div class="frequency">
     <h2>Kommunikation</h2>
-    <span>{{activeTask?.Helper?.RadioFrequence}} (Frequenz)</span>
+    <span class="iconText"><mat-icon>speaker_phone</mat-icon>{{activeTask?.Helper?.RadioFrequence}} (Frequenz)</span>
+  </div>
+  <div class="phone">
+    <span class="iconText"> <mat-icon>phone</mat-icon>{{activeTask?.Helper?.Phone}}</span>
   </div>
   <div class="description">
     <h2>Info</h2>
@@ -22,7 +26,7 @@
   </div>
   <div class="specialFeatures">
     <h2>Besonderheiten</h2>
-    <span>Gefahr 1</span>
+    <span>{{activeTask?.SpecialInfo}}</span>
   </div>
   <div class="state">
     <h2>Einsatz Status</h2>
@@ -35,7 +39,9 @@
     <h2>Einsatzleiter</h2>
     <span class="iconText"> <mat-icon>person</mat-icon>{{activeMission?.MissionManager?.Name}}</span>
   </div>
-
+  <div class="managerPhone">
+    <span class="iconText"> <mat-icon>phone</mat-icon>{{activeMission?.MissionManager?.Phone}}</span>
+  </div>
   <button id="mapSwitch" mat-fab extended [routerLink]="'/map'">
     <mat-icon>map</mat-icon>
   </button>
