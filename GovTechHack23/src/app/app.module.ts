@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AddHelperDialogComponent } from './add-helper-dialog/add-helper-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MapComponent,
     MapViewComponent,
     StateDialogComponent,
+    AddHelperDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,8 @@
   </div>
   <div class="helper">
     <h2>Helfende</h2>
-    <span class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
+    <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
+    <button *ngIf="!activeTask?.Helper" mat-flat-button color="accent" (click)="openAddHelperDialog()">Helfender Zuordnen</button>
   </div>
   <div class="frequency">
     <h2>Kommunikation</h2>
@@ -27,7 +28,7 @@
     <h2>Einsatz Status</h2>
     <span class="stateUpdate">
       <span>{{getActiveState(activeTask?.StatusId)}}</span>
-      <button mat-flat-button color="accent" (click)="openDialog()">Status update</button>
+      <button mat-flat-button color="accent" (click)="openStateDialog()">Status update</button>
     </span>
   </div>
   <div class="missionManager">

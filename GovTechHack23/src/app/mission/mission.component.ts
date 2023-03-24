@@ -1,3 +1,4 @@
+import { AddHelperDialogComponent } from './../add-helper-dialog/add-helper-dialog.component';
 import { MissionManager } from 'src/shared/missionManager.model';
 import { Mission } from 'src/shared/mission.model';
 import { FirebaseDbService } from 'src/db/firebase-db.service';
@@ -15,6 +16,7 @@ import { MissionTask } from 'src/shared/missionTask.model';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Status } from 'src/shared/status.model';
 import { identifierName } from '@angular/compiler';
+import { Helper } from 'src/shared/helper.model';
 
 @Component({
   selector: 'app-mission',
@@ -49,6 +51,11 @@ export class MissionComponent implements OnInit {
    */
   public activeHelperId: number | undefined;
 
+  /**
+   * Aktiver Helfer
+   */
+  public activeHelper: Helper | undefined;
+
 
   /**
    * Aktive Mission
@@ -59,6 +66,11 @@ export class MissionComponent implements OnInit {
    * Aktive Mission
    */
   public activeMission: Mission | undefined;
+
+  /**
+   * Helfer
+   */
+  public helpers: Helper[] | undefined;
 
   /**
    * States
@@ -94,8 +106,9 @@ export class MissionComponent implements OnInit {
       this.activeTaskId$,
     ]
       ).subscribe(([missions, managers, helpers, tasks,  activeId]) => {
-        const activeHelper = helpers.find(h => h.HelperId === this.activeHelperId)
-        this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => activeHelper ? t.TaskId === activeHelper.TaskId : true);
+        this.activeHelper = helpers.find(h => h.HelperId === this.activeHelperId)
+        this.helpers = helpers;
+        this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => this.activeHelper ? t.TaskId === this.activeHelper.TaskId : true);
          //missionTasks aufsteigend sortieren
         this.missionTasks.sort((a, b) => a.TaskId - b.TaskId);
         this.activeTask = this.missionTasks.find(t => t.TaskId === activeId);
@@ -107,7 +120,7 @@ export class MissionComponent implements OnInit {
   /**
    * Öffnet den Status Dialog und gibt die Datenänderung über afterClosed() zurück
    */
-  openDialog(): void {
+  openStateDialog(): void {
     const dialogRef = this.dialog.open(StateDialogComponent, {
       data: { state: this.activeTask?.StatusId },
     });
@@ -120,6 +133,20 @@ export class MissionComponent implements OnInit {
           ...this.activeTask,
           StatusId: Number(result),
         });
+      }
+    });
+  }
+
+  openAddHelperDialog(): void {
+    const dialogRef = this.dialog.open(AddHelperDialogComponent, {
+      data: { state: this.activeTask },
+    });
+
+    dialogRef.afterClosed().subscribe((helperId: number) => {
+      const newHelper = this.helpers?.find(h => h.HelperId === Number(helperId))
+      if(newHelper && this.activeTask) {
+        console.log(newHelper.id, {...newHelper, TaskId: this.activeTask?.TaskId})
+        this.firebaseDbService.udpateHelper(newHelper.id, {...newHelper, TaskId: this.activeTask?.TaskId})
       }
     });
   }
