@@ -1,13 +1,13 @@
 <h1 mat-dialog-title>Status melden</h1>
 <div mat-dialog-content>
   <p>Wie ist deine aktuelle Einsatzsituation?</p>
-  <select cdkFocusInitial [(ngModel)]="data" name="state" class="dropdown">
-    <option *ngFor="let state of states" [value]="state.StatusId">
+  <mat-select cdkFocusInitial [(value)]="data.state" name="state" class="dropdown">
+    <mat-option *ngFor="let state of states" [value]="state.StatusId">
       {{state.Name}}
-    </option>
-  </select>
+    </mat-option>
+  </mat-select>
 </div>
 <div mat-dialog-actions [align]="'end'">
-  <button mat-button (click)="onNoClick()">Abbrechen</button>
-  <button mat-button [mat-dialog-close]="data" >Speichern</button>
+  <button mat-button (click)="dialogRef.close()">Abbrechen</button>
+  <button mat-button (click)="onYesClick()">Speichern</button>
 </div>
