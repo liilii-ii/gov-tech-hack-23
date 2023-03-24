@@ -40,7 +40,11 @@ export class MapComponent implements OnInit {
 
       //when the state of a task has changed notify the mission owner
       if (!helper || !stateText) return;
-      this.notifier.openSnackBar(helper?.Name, helper?.HelperId, stateText);
+      this.notifier.notifyMissionOwner(
+        helper?.Name,
+        helper?.HelperId,
+        stateText
+      );
     });
   }
 
@@ -56,10 +60,10 @@ export class MapComponent implements OnInit {
     if (JSON.stringify(tasksUpdates) === JSON.stringify(this.tasks)) return;
 
     //Determine which task has changed
-    this.changedTask = this.tasks.find(
+    this.changedTask = tasksUpdates.find(
       (task) =>
         task.StatusId !==
-        tasksUpdates.find((t) => t.TaskId === task.TaskId)?.StatusId
+        this.tasks?.find((t) => t.TaskId === task.TaskId)?.StatusId
     );
 
     // update the task in the end

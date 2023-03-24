@@ -14,19 +14,39 @@ interface SnackBarMessage {
 export class StateNotifierService {
   constructor(private snackBar: MatSnackBar, private router: Router) {}
 
-  openSnackBar(
+  notifyMissionOwner(
     helperName: string,
-    helperId: number,
+    taskId: number,
     changedActionText: string
   ) {
-    if (!helperId) return;
-    const text = `Helfer ${helperName} hat seinen Status geändert auf "${changedActionText}"`;
+    if (!taskId) return;
+    const text = `Helfer:in ${helperName} hat den Status geändert auf "${changedActionText}"`;
 
     let snackBarRef = this.snackBar.open(text, 'Zum Einsatz');
 
-    //TODO mit mirj routing fixen
+    snackBarRef.onAction().subscribe(() =>
+      this.router.navigate(['mission'], {
+        queryParams: { taskId: taskId },
+        queryParamsHandling: 'merge',
+      })
+    );
+  }
+
+  notifyHelper(helperId: number, taskName: string, taskId: number) {
+    if (!helperId) return;
+    const text = `Du wurdet dem Gebiet "${taskName}" zugeteilt`;
+
+    let snackBarRef = this.snackBar.open(text, 'Zu deinem Einsatz');
+
     snackBarRef
       .onAction()
       .subscribe(() => this.router.navigate(['mission', { taskId: helperId }]));
+
+    snackBarRef.onAction().subscribe(() =>
+      this.router.navigate(['mission'], {
+        queryParams: { taskId: taskId },
+        queryParamsHandling: 'merge',
+      })
+    );
   }
 }

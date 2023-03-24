@@ -18,7 +18,7 @@
   </div>
   <div class="container">
     <div class="helper">
-      <h2>Helfende</h2>
+      <h2>Helfer:in</h2>
       <div class="wrapper">
         <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
         <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>phone</mat-icon>{{activeTask?.Helper?.Phone}}</span>
@@ -30,7 +30,7 @@
       <h2>Kommunikation</h2>
       <span class="iconText"><mat-icon>speaker_phone</mat-icon>{{activeTask?.Helper?.RadioFrequence}} (Frequenz)</span>
     </div>
-   
+
     <div class="description">
       <h2>Info</h2>
       <p>{{activeTask?.Description}}</p>
