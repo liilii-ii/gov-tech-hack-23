@@ -14,8 +14,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StateDialogComponent implements OnInit {
   states: Status[] | undefined;
-  tasks: MissionTask[] | undefined;
-  public selectedStateId: number | undefined;
   public activeTask: MissionTask | undefined;
 
   constructor(
@@ -30,14 +28,7 @@ export class StateDialogComponent implements OnInit {
       this.firebaseDbService.getAllTasks(),
     ]).subscribe(([states, tasks]) => {
       this.states = states;
-      this.tasks = tasks;
       this.activeTask = tasks.find((t) => t.TaskId === this.data.activeTask);
-
-      this.selectedStateId = this.activeTask?.StatusId;
-
-      //compare t array and this.tasks array if they are the same
-      console.log(JSON.stringify(tasks) === JSON.stringify(this.tasks));
-      // if task has state changes, notify the mission owner
     });
   }
 
