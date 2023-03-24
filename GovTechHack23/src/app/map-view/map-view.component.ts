@@ -1,10 +1,10 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import maplibreGl, {Map, Marker} from 'maplibre-gl';
 import { MissionTask } from 'src/shared/missionTask.model';
 import { Helper } from 'src/shared/helper.model';
 import { FirebaseDbService } from 'src/db/firebase-db.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 
@@ -20,6 +20,12 @@ export class MapViewComponent implements OnInit {
    * Karte 
    *  */  
   private map: Map | undefined;  
+
+  
+  /**
+   * Der aktive Helfer wrid von der URl genommen
+   */
+   public activeHelperId$: Observable<number> | undefined;
 
 
     /**
@@ -39,22 +45,28 @@ export class MapViewComponent implements OnInit {
 }
 
   constructor(private router: Router,
-    private firebaseDbService: FirebaseDbService) {
+    private firebaseDbService: FirebaseDbService,   private route: ActivatedRoute,) {
 
 }
 
   ngOnInit(): void {
+
+    this.activeHelperId$ = this.route.queryParams.pipe(
+        map((params) => Number(params.helper)),
+      );
        
  
     combineLatest([
 
         this.firebaseDbService.getAllHelper(),
         this.firebaseDbService.getAllTasks(),
+        this.activeHelperId$
       ]
-        ).subscribe(([helpers, tasks]) => {
+        ).subscribe(([helpers, tasks, activeHelperId]) => {
           this.helpers = helpers;
-          this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)}));
-            this.initMap(tasks, helpers)
+          const activeHelper = this.helpers.find(h => h.HelperId === activeHelperId)
+          this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => t.TaskId === activeHelper?.TaskId);
+          this.initMap(this.missionTasks, helpers)
         })
   }
 
