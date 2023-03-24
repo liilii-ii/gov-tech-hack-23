@@ -1,49 +1,52 @@
-<div class="container">
+<header>
   <div class="title">
     <h1>{{activeMission?.Name}}</h1>
   </div>
+  <div class="missionManager">
+    <h2>Einsatzleiter:in</h2>
+    <div class="info-wrapper">
+      <span class="iconText"> <mat-icon>person</mat-icon>{{activeMission?.MissionManager?.Name}}</span>
+      <span class="iconText"> <mat-icon>phone</mat-icon>{{activeMission?.MissionManager?.Phone}}</span>
+    </div>
+  </div>
+</header>
+
   <div class="subMissions">
     <mat-tab-group [selectedIndex]="activeTask && activeTask.TaskId ? activeTask.TaskId - 1 : undefined" (selectedTabChange)="changeParam($event)" >
       <mat-tab [label]="missionTask.Name" *ngFor="let missionTask of missionTasks"></mat-tab>
     </mat-tab-group>
   </div>
-  <div class="helper">
-    <h2>Hilfskraft</h2>
-    <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
-    <span> {{activeTask?.Helper?.Skills}}</span>
-    <button *ngIf="!activeTask?.Helper" mat-flat-button color="accent" (click)="openAddHelperDialog()">Helfender Zuordnen</button>
-  </div>
-  <div class="frequency">
-    <h2>Kommunikation</h2>
-    <span class="iconText"><mat-icon>speaker_phone</mat-icon>{{activeTask?.Helper?.RadioFrequence}} (Frequenz)</span>
-  </div>
-  <div class="phone">
-    <span class="iconText"> <mat-icon>phone</mat-icon>{{activeTask?.Helper?.Phone}}</span>
-  </div>
-  <div class="description">
-    <h2>Info</h2>
-    <p>{{activeTask?.Description}}</p>
-  </div>
-  <div class="specialFeatures">
-    <h2>Besonderheiten</h2>
-    <span>{{activeTask?.SpecialInfo}}</span>
-  </div>
+  <div class="container">
+    <div class="helper">
+      <h2>Helfer:in</h2>
+      <div class="wrapper">
+        <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>assignment_ind</mat-icon>{{activeTask?.Helper?.Name}}</span>
+        <span *ngIf="activeTask?.Helper" class="iconText"> <mat-icon>phone</mat-icon>{{activeTask?.Helper?.Phone}}</span>
+      </div>
+      <span> {{activeTask?.Helper?.Skills}}</span>
+      <button *ngIf="!activeTask?.Helper" mat-flat-button color="accent" (click)="openAddHelperDialog()">Helfender Zuordnen</button>
+    </div>
+    <div class="frequency">
+      <h2>Kommunikation</h2>
+      <span class="iconText"><mat-icon>speaker_phone</mat-icon>{{activeTask?.Helper?.RadioFrequence}} (Frequenz)</span>
+    </div>
+
+    <div class="description">
+      <h2>Info</h2>
+      <p>{{activeTask?.Description}}</p>
+    </div>
+    <div class="specialFeatures">
+      <h2>Besonderheiten</h2>
+      <span>{{activeTask?.SpecialInfo}}</span>
+    </div>
   <div class="state">
-    <h2>Einsatz Status</h2>
+      <h2>Status</h2>
     <span class="stateUpdate">
       <span>{{getActiveState(activeTask?.StatusId)}}</span>
-      <button mat-flat-button color="accent" (click)="openStateDialog()">Status update</button>
+      <button mat-flat-button color="accent" (click)="openStateDialog()">Update</button>
     </span>
   </div>
-  <div class="missionManager">
-    <h2>Einsatzleiter</h2>
-    <span class="iconText"> <mat-icon>person</mat-icon>{{activeMission?.MissionManager?.Name}}</span>
-  </div>
-  <div class="managerPhone">
-    <span class="iconText"> <mat-icon>phone</mat-icon>{{activeMission?.MissionManager?.Phone}}</span>
-  </div>
-  <button id="mapSwitch" mat-fab extended [routerLink]="'/map'">
-    <mat-icon>map</mat-icon>
-  </button>
-
+    <button id="mapSwitch" mat-fab extended [routerLink]="'/map'">
+      <mat-icon>map</mat-icon>
+    </button>
 </div>

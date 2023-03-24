@@ -3,24 +3,34 @@ h2 {
   margin: 0;
 }
 
+header {
+  background-color: #AB1C1C;
+  color: white;
+  padding: 16px;
+  .info-wrapper {
+    display: flex;
+    gap: 10px;
+  }
+}
+
 .container {
   padding: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 0px;
+  gap: 10px 0px;
   grid-auto-flow: row;
   grid-template-areas:
-    "title title"
-    "subMissions subMissions"
-    "helper frequency"
-    "helper phone"
-    "missionManager missionManager"
-    "managerPhone managerPhone"
+    "state state"
+    "frequency frequency"
     "description description"
     "specialFeatures specialFeatures"
-    "state state";
-
+    "helper helper";
+    
 }
+
+h2 {
+  font-size:18px;
+} 
 
 .title {
   grid-area: title;
@@ -32,6 +42,16 @@ h2 {
 
 .helper {
   grid-area: helper;
+  .wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.title-wrapper {
+  display: flex;
+  gap: 8px;
 }
 
 .frequency {

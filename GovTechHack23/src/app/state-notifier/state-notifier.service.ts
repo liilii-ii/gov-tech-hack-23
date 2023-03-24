@@ -20,7 +20,7 @@ export class StateNotifierService {
     changedActionText: string
   ) {
     if (!taskId) return;
-    const text = `Hilfskraft ${helperName} hat den Status geändert auf "${changedActionText}"`;
+    const text = `Helfer:in ${helperName} hat den Status geändert auf "${changedActionText}"`;
 
     let snackBarRef = this.snackBar.open(text, 'Zum Einsatz');
 
