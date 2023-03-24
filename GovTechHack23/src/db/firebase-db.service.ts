@@ -105,4 +105,11 @@ export class FirebaseDbService {
   ) {
     return this.tasks.doc(id).update(payload);
   }
+
+  udpateHelper(
+    id: string,
+    payload: Helper
+  ) {
+    return this.helper.doc(id).update(payload);
+  }
 }
