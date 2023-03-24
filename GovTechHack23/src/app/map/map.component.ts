@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest, map, Observable } from 'rxjs';
 import { FirebaseDbService } from 'src/db/firebase-db.service';
 import { MissionTask } from 'src/shared/missionTask.model';
 import { StateNotifierService } from '../state-notifier/state-notifier.service';
@@ -14,18 +14,31 @@ export class MapComponent implements OnInit {
   tasks: MissionTask[] | undefined;
   changedTask: MissionTask | undefined;
 
+  
+  
+  /**
+   * Der aktive Helfer wrid von der URl genommen
+   */
+   public activeHelperId$: Observable<number> | undefined;
+
   constructor(
     private router: Router,
     private notifier: StateNotifierService,
-    private firebaseDbService: FirebaseDbService
+    private firebaseDbService: FirebaseDbService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.activeHelperId$ = this.route.queryParams.pipe(
+      map((params) => Number(params.helper)),
+    );
+     
     combineLatest([
       this.firebaseDbService.getAllHelper(),
       this.firebaseDbService.getAllTasks(),
       this.firebaseDbService.getAllStatus(),
-    ]).subscribe(([helpers, tasks, states]) => {
+      this.activeHelperId$,
+    ]).subscribe(([helpers, tasks, states, activeHelperId]) => {
       this.monitorTasksChanges(tasks);
 
       //Determine which helper is assigned to the changed task
@@ -39,7 +52,7 @@ export class MapComponent implements OnInit {
       const stateText = states.find((s) => s.StatusId === state)?.Name;
 
       //when the state of a task has changed notify the mission owner
-      if (!helper || !stateText) return;
+      if (!helper || !stateText || activeHelperId) return;
       this.notifier.notifyMissionOwner(
         helper?.Name,
         helper?.HelperId,
