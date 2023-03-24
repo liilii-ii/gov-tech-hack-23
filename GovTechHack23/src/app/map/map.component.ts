@@ -55,7 +55,7 @@ export class MapComponent implements OnInit {
       if (!helper || !stateText || activeHelperId) return;
       this.notifier.notifyMissionOwner(
         helper?.Name,
-        helper?.HelperId,
+        helper?.TaskId,
         stateText
       );
     });
