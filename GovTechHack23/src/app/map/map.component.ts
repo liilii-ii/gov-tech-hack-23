@@ -49,7 +49,7 @@ export class MapComponent implements OnInit {
   }
 
   public navigateToMissions(): void {
-    this.router.navigate(['mission']);
+    this.router.navigate(['mission'], {queryParams: {taskId: undefined}, queryParamsHandling: 'merge'});
   }
 
   private monitorTasksChanges(tasksUpdates: MissionTask[]): void {

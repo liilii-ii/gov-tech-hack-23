@@ -65,7 +65,7 @@ export class MapViewComponent implements OnInit {
         ).subscribe(([helpers, tasks, activeHelperId]) => {
           this.helpers = helpers;
           const activeHelper = this.helpers.find(h => h.HelperId === activeHelperId)
-          this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => t.TaskId === activeHelper?.TaskId);
+          this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => activeHelper ? t.TaskId === activeHelper?.TaskId : true);
           this.initMap(this.missionTasks, helpers)
         })
   }

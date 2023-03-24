@@ -150,4 +150,8 @@ export class MissionComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
   }
+
+  navigateToMap(): void {
+    this.router.navigate(['map'], {queryParamsHandling: 'merge'});
+  }
 }

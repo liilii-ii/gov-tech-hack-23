@@ -46,7 +46,7 @@
       <button mat-flat-button color="accent" (click)="openStateDialog()">Update</button>
     </span>
   </div>
-    <button id="mapSwitch" mat-fab extended [routerLink]="'/map'">
+    <button id="mapSwitch" mat-fab extended (click)="navigateToMap()">
       <mat-icon>map</mat-icon>
     </button>
 </div>
