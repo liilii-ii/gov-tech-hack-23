@@ -69,18 +69,7 @@ export class MissionComponent implements OnInit {
     return this.states?.find((s) => s.StatusId === id)?.Name;
   }
 
-  /**
-   * Returns active tab index
-   */
-  public get getIndexOfActiveTab$(): Observable<number> {
-    if (!this.activeTaskId$) return of(0);
-    return this.activeTaskId$.pipe(
-      map((id) => {
-        const tab = this.subMissions.find((t) => t.id === id);
-        return tab ? this.subMissions.indexOf(tab) : 0;
-      })
-    );
-  }
+ 
 
   constructor(
     private firebaseDbService: FirebaseDbService,
@@ -91,7 +80,6 @@ export class MissionComponent implements OnInit {
 
   ngOnInit(): void {
        this.activeTaskId$ = this.route.queryParams.pipe(
-        tap(l => console.log(l)),
         tap(params => this.activeHelperId === Number(params.helper)),
         map((params) => Number((params as any).taskId))
     );

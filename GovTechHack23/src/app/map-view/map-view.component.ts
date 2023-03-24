@@ -244,16 +244,17 @@ export class MapViewComponent implements OnInit {
           
       });
       map.on('click', 'area_Aa', () => {
-          this.router.navigate(['mission'], { queryParams: { taskId: 1 }, queryParamsHandling: 'merge' })
+        this.router.navigate(['mission'], { queryParams: { taskId: 1 }, queryParamsHandling: 'merge' });
+          
       })
       map.on('click', 'area_Bb', () => {
-          this.router.navigate(['mission',   { queryParams: { taskId: 2 }, queryParamsHandling: 'merge' }])
+        this.router.navigate(['mission'], { queryParams: { taskId: 2 }, queryParamsHandling: 'merge' });
       })
       map.on('click', 'area_Cc', () => {
-          this.router.navigate(['mission',   { queryParams: { taskId: 3 }, queryParamsHandling: 'merge' }])
+        this.router.navigate(['mission'], { queryParams: { taskId: 3 }, queryParamsHandling: 'merge' });
       })
       map.on('click', 'area_Dd', () => {
-          this.router.navigate(['mission',   { queryParams: { taskId: 4 }, queryParamsHandling: 'merge' }])
+        this.router.navigate(['mission'], { queryParams: { taskId: 4 }, queryParamsHandling: 'merge' });
       })
 
       return map;
