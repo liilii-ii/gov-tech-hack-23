@@ -110,6 +110,7 @@ export class MissionComponent implements OnInit {
       this.missionTasks.sort((a, b) => a.TaskId - b.TaskId);
 
       this.activeTask = this.missionTasks.find((t) => t.TaskId === activeId);
+
       this.activeMission = {
         ...missions[0],
         MissionManager: managers.find(
