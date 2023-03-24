@@ -49,7 +49,7 @@ export class MissionComponent implements OnInit {
   /**
    * Der aktive Helfer wrid von der URl genommen
    */
-  public activeHelperId: number | undefined;
+  public activeHelperId$: Observable<number> | undefined;
 
   /**
    * Aktiver Helfer
@@ -90,8 +90,11 @@ export class MissionComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeTaskId$ = this.route.queryParams.pipe(
-      tap((params) => this.activeHelperId === Number(params.helper)),
       map((params) => Number((params as any).taskId))
+    );
+
+    this.activeHelperId$ = this.route.queryParams.pipe(
+      map((params) => Number(params.helper)),
     );
 
     this.firebaseDbService.getAllStatus().subscribe((s) => (this.states = s));
@@ -102,14 +105,15 @@ export class MissionComponent implements OnInit {
       this.firebaseDbService.getAllHelper(),
       this.firebaseDbService.getAllTasks(),
       this.activeTaskId$,
+      this.activeHelperId$
     ]
-      ).subscribe(([missions, managers, helpers, tasks,  activeId]) => {
-        this.activeHelper = helpers.find(h => h.HelperId === this.activeHelperId)
+      ).subscribe(([missions, managers, helpers, tasks,  activeId, activeHelperId]) => {
+        this.activeHelper = helpers.find(h => h.HelperId === activeHelperId)
         this.helpers = helpers;
         this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => this.activeHelper ? t.TaskId === this.activeHelper.TaskId : true);
          //missionTasks aufsteigend sortieren
         this.missionTasks.sort((a, b) => a.TaskId - b.TaskId);
-        this.activeTask = this.missionTasks.find(t => t.TaskId === activeId);
+        this.activeTask = this.activeHelper ? this.missionTasks[0] : this.missionTasks.find(t => t.TaskId === activeId);
         this.activeMission = {...missions[0], MissionManager: managers.find(m => m.MissionId === missions[0].MissionId)};
       })
  
@@ -135,7 +139,6 @@ export class MissionComponent implements OnInit {
     dialogRef.afterClosed().subscribe((helperId: number) => {
       const newHelper = this.helpers?.find(h => h.HelperId === Number(helperId))
       if(newHelper && this.activeTask) {
-        console.log(newHelper.id, {...newHelper, TaskId: this.activeTask?.TaskId})
         this.firebaseDbService.udpateHelper(newHelper.id, {...newHelper, TaskId: this.activeTask?.TaskId})
       }
     });
