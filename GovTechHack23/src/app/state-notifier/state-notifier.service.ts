@@ -12,22 +12,21 @@ interface SnackBarMessage {
   providedIn: 'root',
 })
 export class StateNotifierService {
-  private message: SnackBarMessage | undefined = {
-    text: 'Helfer Marielle hat die suche gestartet',
-    userId: 2,
-  };
-
   constructor(private snackBar: MatSnackBar, private router: Router) {}
 
-  openSnackBar() {
-    if (!this.message) return;
+  openSnackBar(
+    helperName: string,
+    helperId: number,
+    changedActionText: string
+  ) {
+    if (!helperId) return;
+    const text = `Helfer ${helperName} hat seinen Status geändert auf "${changedActionText}"`;
 
-    let snackBarRef = this.snackBar.open(this.message.text, 'Zum Einsatz');
+    let snackBarRef = this.snackBar.open(text, 'Zum Einsatz');
 
+    //TODO mit mirj routing fixen
     snackBarRef
       .onAction()
-      .subscribe(() =>
-        this.router.navigate(['mission', { id: this.message?.userId }])
-      );
+      .subscribe(() => this.router.navigate(['mission', { taskId: helperId }]));
   }
 }
