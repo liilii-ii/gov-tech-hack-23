@@ -1,0 +1,12 @@
+<h1>Helfer Zuordnen</h1>
+<div mat-dialog-content>
+    <select cdkFocusInitial [(ngModel)]="selectedHelperId" name="state" class="dropdown">
+      <option *ngFor="let helper of helpers$ | async" [value]="helper.HelperId">
+        {{helper.Name}}
+      </option>
+    </select>
+  </div>
+  <div mat-dialog-actions [align]="'end'">
+    <button mat-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-button [mat-dialog-close]="selectedHelperId" >Zuordnen</button>
+  </div>
