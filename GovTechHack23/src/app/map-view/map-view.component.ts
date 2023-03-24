@@ -62,11 +62,11 @@ export class MapViewComponent implements OnInit {
         this.firebaseDbService.getAllTasks(),
         this.activeHelperId$
       ]
-        ).subscribe(([helpers, tasks, activeHelperId]) => {
+        ).subscribe(([helpers, tasks, activeHelperId]) => {  
           this.helpers = helpers;
           const activeHelper = this.helpers.find(h => h.HelperId === activeHelperId)
           this.missionTasks = tasks.map(t => ({...t, Helper: helpers.find(i => i.TaskId === t.TaskId)})).filter(t => activeHelper ? t.TaskId === activeHelper?.TaskId : true);
-          this.initMap(this.missionTasks, helpers)
+          this.map = this.initMap(this.missionTasks, helpers)
         })
   }
 
@@ -83,7 +83,7 @@ export class MapViewComponent implements OnInit {
         center: [8.4612, 46.6521], // starting position [lng, lat]
         zoom: 13 // starting zoom
       });
-  
+
   
       map.on('styledata', () =>{
         tasks.forEach(element => {
