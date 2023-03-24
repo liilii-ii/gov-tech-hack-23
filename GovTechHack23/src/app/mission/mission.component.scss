@@ -17,14 +17,18 @@ header {
   padding: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px 0px;
+  gap: 10px 0px;
   grid-auto-flow: row;
   grid-template-areas:
     "state state"
     "frequency frequency"
     "description description"
     "specialFeatures specialFeatures"
-    "helper helper"
+    "helper helper";
+    h2 {
+      font-size:18px;
+    }  
+
 
 }
 
