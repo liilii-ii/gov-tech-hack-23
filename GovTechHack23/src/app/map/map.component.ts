@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
 import { FirebaseDbService } from 'src/db/firebase-db.service';
 import { MissionTask } from 'src/shared/missionTask.model';
-import { StateNotifierService } from '../state-notifier/state-notifier.service';
+import { UserNotifierService } from '../user-notifier-service/user-notifier.service';
 
 @Component({
   selector: 'app-map',
@@ -14,25 +14,23 @@ export class MapComponent implements OnInit {
   tasks: MissionTask[] | undefined;
   changedTask: MissionTask | undefined;
 
-  
-  
   /**
    * Der aktive Helfer wrid von der URl genommen
    */
-   public activeHelperId$: Observable<number> | undefined;
+  public activeHelperId$: Observable<number> | undefined;
 
   constructor(
     private router: Router,
-    private notifier: StateNotifierService,
+    private notifier: UserNotifierService,
     private firebaseDbService: FirebaseDbService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.activeHelperId$ = this.route.queryParams.pipe(
-      map((params) => Number(params.helper)),
+      map((params) => Number(params.helper))
     );
-     
+
     combineLatest([
       this.firebaseDbService.getAllHelper(),
       this.firebaseDbService.getAllTasks(),
@@ -53,16 +51,15 @@ export class MapComponent implements OnInit {
 
       //when the state of a task has changed notify the mission owner
       if (!helper || !stateText || activeHelperId) return;
-      this.notifier.notifyMissionOwner(
-        helper?.Name,
-        helper?.TaskId,
-        stateText
-      );
+      this.notifier.notifyMissionOwner(helper?.Name, helper?.TaskId, stateText);
     });
   }
 
   public navigateToMissions(): void {
-    this.router.navigate(['mission'], {queryParams: {taskId: undefined}, queryParamsHandling: 'merge'});
+    this.router.navigate(['mission'], {
+      queryParams: { taskId: undefined },
+      queryParamsHandling: 'merge',
+    });
   }
 
   private monitorTasksChanges(tasksUpdates: MissionTask[]): void {

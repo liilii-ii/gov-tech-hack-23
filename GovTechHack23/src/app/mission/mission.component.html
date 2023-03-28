@@ -12,7 +12,7 @@
 </header>
 
   <div class="subMissions">
-    <mat-tab-group [selectedIndex]="activeTask && activeTask.TaskId ? activeTask.TaskId - 1 : undefined" (selectedTabChange)="changeParam($event)" >
+    <mat-tab-group [selectedIndex]="activeTask && activeTask.TaskId ? activeTask.TaskId - 1 : undefined" (selectedTabChange)="changeMissionTask($event)" >
       <mat-tab [label]="missionTask.Name" *ngFor="let missionTask of missionTasks"></mat-tab>
     </mat-tab-group>
   </div>

@@ -7,6 +7,6 @@
     </mat-select>
   </div>
   <div mat-dialog-actions [align]="'end'">
-    <button mat-button (click)="onNoClick()">Abbrechen</button>
+    <button mat-button (click)="dialogRef.close()">Abbrechen</button>
     <button mat-button [mat-dialog-close]="selectedHelperId" >Zuordnen</button>
   </div>
